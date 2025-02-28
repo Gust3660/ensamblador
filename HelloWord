@@ -1,0 +1,21 @@
+section .data
+    msg db "Hola, Mundo", 0
+
+section .text
+    global _start
+
+_start:
+    ; Escribir el mensaje en la pantalla
+    mov edx, len    ; tamaño del mensaje
+    mov ecx, msg    ; puntero al mensaje
+    mov ebx, 1      ; file descriptor (stdout)
+    mov eax, 4      ; número de la llamada al sistema (sys_write)
+    int 0x80        ; llamada al sistema
+
+    ; Salir del programa
+    mov eax, 1      ; número de la llamada al sistema (sys_exit)
+    xor ebx, ebx    ; código de salida
+    int 0x80        ; llamada al sistema
+
+section .bss
+    len equ $ - msg
