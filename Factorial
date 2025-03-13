@@ -1,0 +1,25 @@
+section .data
+    num db 5           ; Número para calcular el factorial
+    result dw 1        ; Resultado inicializado a 1
+
+section .text
+    global _start
+
+_start:
+    mov cx, [num]      ; Coloca el número en el registro CX (contador)
+    mov ax, 1          ; Inicializa AX con 1 (acumulador para el factorial)
+
+factorial_loop:
+    cmp cx, 1          ; Comprueba si CX es 1
+    je end_factorial   ; Si es 1, termina el bucle
+    mul cx             ; Multiplica AX por CX
+    dec cx             ; Disminuye CX en 1
+    jmp factorial_loop ; Repite el bucle
+
+end_factorial:
+    mov [result], ax   ; Guarda el resultado en la variable result
+
+    ; Termina el programa (función exit en Linux)
+    mov eax, 60        ; syscall: exit
+    xor edi, edi       ; Código de salida 0
+    syscall
