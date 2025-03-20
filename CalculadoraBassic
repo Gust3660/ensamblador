@@ -1,0 +1,8 @@
+section .data
+    msg db "El resultado es: ", 0
+    num1 db 10
+    num2 db 5
+section .text
+global _start
+_start:
+    add:
