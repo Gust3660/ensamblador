@@ -1,0 +1,28 @@
+section .data
+    registro db "RCFI123456", 0 ; Registro de ejemplo
+
+section .bss
+    buffer resb 256 ; Espacio reservado para almacenar datos
+
+section .text
+    global _start
+
+_start:
+    ; Leer el registro
+    mov esi, registro ; Dirección de inicio de los datos
+    mov edi, buffer   ; Dirección donde almacenar datos
+    call leer_registro ; Llamada a la subrutina para leer el registro
+
+    ; Salir del programa
+    mov eax, 60       ; Código de salida del sistema
+    xor edi, edi      ; Código de salida 0
+    syscall
+
+leer_registro:
+    ; Copiar datos byte por byte
+    .loop:
+        lodsb          ; Cargar el siguiente byte en AL
+        stosb          ; Almacenar el byte en el buffer
+        cmp al, 0      ; Verificar si es el fin del registro
+        jne .loop      ; Si no, continuar
+    ret
