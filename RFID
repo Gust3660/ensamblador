@@ -1,0 +1,24 @@
+; Configuración del microcontrolador PIC
+    org 0x00         ; Punto de entrada
+
+    ; Configurar UART
+    bsf STATUS, RP0  ; Seleccionar banco de registros
+    movlw 0x40       ; Configurar baud rate
+    movwf SPBRG
+    bcf STATUS, RP0  ; Volver al banco de ejecución
+    bsf TXSTA, BRGH  ; Alta velocidad
+    bsf RCSTA, SPEN  ; Activar puerto serie
+
+leer_rfid:
+    btfss PIR1, RCIF ; Esperar datos en el buffer de recepción
+    goto leer_rfid
+    movf RCREG, W    ; Leer el dato recibido
+    call procesar_dato
+
+    goto leer_rfid    ; Volver a leer otro dato
+
+procesar_dato:
+    ; Aquí puedes agregar la lógica para interpretar el dato RFID recibido
+    return
+
+    end
